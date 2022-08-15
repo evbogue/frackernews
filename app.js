@@ -6,6 +6,7 @@ const cache = new IdbKvStore('cachev1')
 const api = 'https://hacker-news.firebaseio.com/v0/'
 
 let follows = []
+let logstore = []
 
 cache.get('follows').then(followlist => {
   if (followlist) {
@@ -14,32 +15,47 @@ cache.get('follows').then(followlist => {
 })
 
 async function render (msg) {
-  const div = h('div', {classList: 'message'})
-  div.appendChild(h('span', {style: 'float: right;'}, [
-    h('a', {href: '#' + msg.id}, [human(new Date(msg.time * 1000))])
-  ]))
-  div.appendChild(h('a', {href: '#' + msg.by}, [msg.by]))
+  const got = document.getElementById(msg.id)
 
-  if (msg.url) {
-    div.appendChild(h('p', [
-      h('a', {href: msg.url}, [msg.title]),
-      h('pre', [msg.url])
+  if (!got) {
+    const wrapper = h('div', {id: msg.id})
+    const div = h('div', {classList: 'message'})
+    wrapper.appendChild(div)
+
+    div.appendChild(h('span', {style: 'float: right;'}, [
+      h('a', {href: '#' + msg.id}, [human(new Date(msg.time * 1000))])
     ]))
-  }
+    div.appendChild(h('a', {href: '#' + msg.by}, [msg.by]))
 
-  if (msg.parent) {
-    div.appendChild(h('p', [h('a', {href: '#' + msg.parent}, ['Re: ' + msg.parent])]))
-  }
+    if (msg.url) {
+      div.appendChild(h('p', [
+        h('a', {href: msg.url}, [msg.title]),
+        h('pre', [msg.url])
+      ]))
+    }
 
-  if (msg.text) {
-    div.appendChild(h('p', {innerHTML: msg.text}))
-  }
+    if (msg.parent) {
+      div.appendChild(h('p', [h('a', {href: '#' + msg.parent}, ['Re: ' + msg.parent])]))
+    }
 
-  if (!msg.text) {
-    div.appendChild(h('pre', [JSON.stringify(msg)]))
-  }
+    if (msg.text) {
+      div.appendChild(h('p', {innerHTML: msg.text}))
+    }
 
-  return div
+    if (!msg.text) {
+      div.appendChild(h('pre', [JSON.stringify(msg)]))
+    }
+
+    const querylog = logstore.filter(item => item.parent == msg.id)
+
+    const replies = h('div', {classList: 'indent'})
+
+    addPosts(querylog, replies)
+
+    wrapper.appendChild(replies)
+
+    return wrapper
+  }
 }
 
 async function addPosts (posts, div) {
@@ -149,6 +165,7 @@ function route (container) {
 
   db.values().then(log => {
     log.sort((a,b) => a.created - b.created)
+    logstore = log
     //console.log(log)
     const src = window.location.hash.substring(1)
 
