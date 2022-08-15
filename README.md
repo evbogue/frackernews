@@ -2,7 +2,7 @@
 
 ### a social layer and local caching of hacker news comments and stories
 
-Try it: https://frackernews.deno.com/
+Try it: https://frackernews.deno.dev/
 
 ##### Why?
 
