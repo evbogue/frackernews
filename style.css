@@ -1,0 +1,51 @@
+body { 
+  background: #fff;
+  font-family: sans-serif;
+}
+
+#scroller {
+  width: 860px;
+  max-width: 97%; 
+  margin-left: auto; 
+  margin-right: auto;
+  margin-top: 2.5em;
+}
+
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-left: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  background: #ff6600;
+}
+
+.message {
+  background: #f6f6ef;
+  padding: .25em;
+  margin-top: .5em;
+  
+}
+
+a {
+  color: #555;
+  text-decoration: none;
+}
+
+#navbar a {
+  text-decoration: none; 
+  color: black;
+}
+
+pre, code {
+  overflow: auto;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: -moz-pre-wrap;
+  white-space: pre-wrap;
+  white-space: pre\9;
+}
+
