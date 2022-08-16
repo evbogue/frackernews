@@ -50,8 +50,10 @@ async function render (msg) {
 
     const replies = h('div', {classList: 'indent'})
 
-    addPosts(querylog, replies)
 
+    if (querylog[0]) {
+      addPosts(querylog, replies)
+    }
     wrapper.appendChild(replies)
 
     return wrapper
@@ -248,6 +250,7 @@ document.body.appendChild(container)
 container.appendChild(h('div', {id: 'navbar'}, [
   h('a', {href: '#'}, [h('strong', ['Fracker News'])]),
   ' ',
-  h('a', {href: '#follows'}, ['Follows'])
+  h('a', {href: '#follows'}, ['Follows']),
+  h('a', {href: 'https://git.sr.ht/~ev/frackernews', style: 'float: right; margin-right: 2em;'}, ['Git'])
 ]))
 route(container)
